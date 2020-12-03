@@ -1,0 +1,10 @@
+version: "3.4"
+services:
+
+  app:
+    build:
+      context: .docker/app
+    volumes:
+      - "./src:/app:${VOLUME_CONSISTENCY:-consistent}"
+    ports:
+      - "${WEB_HOST_PORT:-80}:8080"
