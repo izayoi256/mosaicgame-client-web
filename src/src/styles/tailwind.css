@@ -1,0 +1,77 @@
+@tailwind base;
+
+svg {
+  display: inline;
+}
+
+@tailwind components;
+@tailwind utilities;
+
+.background {
+  @apply h-screen w-screen;
+  @apply bg-theme-500;
+}
+
+.overlay {
+  @apply h-screen w-screen fixed inset-0;
+}
+
+.btn {
+  @apply py-2 px-4 rounded;
+  @apply bg-theme-500 ;
+  @apply text-white font-semibold;
+  @apply transition-all;
+  @apply hover:bg-theme-400;
+  @apply active:bg-theme-600;
+  @apply disabled:opacity-50;
+}
+
+.input {
+  @apply p-1 rounded border border-gray-300;
+}
+
+.input.error {
+  @apply border-red-500;
+}
+
+.select {
+  @apply p-1 rounded border border-gray-300 bg-white;
+}
+
+.select.error {
+  @apply border-red-500;
+}
+
+.py-half-screen {
+  padding-top: 50vh;
+  padding-bottom: 50vh;
+}
+
+.without-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.without-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.rooms {
+  @apply grid grid-cols-1 gap-4;
+  @apply py-half-screen -mt-12;
+}
+
+.rooms .room {
+  @apply mb-4 w-96 h-24;
+  @apply bg-white;
+  @apply flex opacity-70 cursor-pointer;
+  @apply hover:opacity-100;
+}
+
+.rooms .room.selected {
+  @apply opacity-100;
+}
+
+.rooms .room:last-child {
+  @apply -mb-12;
+}
