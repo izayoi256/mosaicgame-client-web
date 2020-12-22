@@ -22,7 +22,7 @@ const Component = ({onSubmit, requiresPassword}) => {
         </div>
       )}
       <div>
-        <button type="submit" className="btn w-full">入室</button>
+        <button type="submit" className="btn py-2 px-4 w-full">入室</button>
       </div>
     </form>
   );

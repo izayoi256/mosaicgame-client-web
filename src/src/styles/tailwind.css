@@ -17,7 +17,7 @@ svg {
 }
 
 .btn {
-  @apply py-2 px-4 rounded;
+  @apply rounded;
   @apply bg-theme-500 ;
   @apply text-white font-semibold;
   @apply transition-all;

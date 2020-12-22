@@ -91,7 +91,7 @@ const App = () => {
             </div>
           )}
           {showMePanel && (
-            <div className="fixed">
+            <div className="fixed z-20">
               {me.name}
               <form onSubmit={onLogoutSubmit}>
                 <button>退出</button>

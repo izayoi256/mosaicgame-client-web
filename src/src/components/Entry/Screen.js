@@ -48,7 +48,7 @@ const Component = ({onTokenFetched}) => {
               />
             </div>
             <div className="w-auto">
-              <button type="submit" disabled={entering} className="btn w-full">
+              <button type="submit" disabled={entering} className="btn py-2 px-4 w-full">
                 {entering && (
                   <Spinner className="animate-spin w-4 h-4 mr-3 -ml-1" />
                 )}

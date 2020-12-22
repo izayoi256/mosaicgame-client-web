@@ -143,6 +143,35 @@ class Api {
     }
   }
 
+  async editRoom(roomId, {size, firstPlayer, secondPlayer}) {
+    const body = {
+      size,
+      firstPlayer,
+      secondPlayer,
+    };
+    const response = await this.request(`/room/${roomId}`, {
+      method: 'PUT',
+      authenticate: true,
+      body,
+    });
+    if (!response.ok) {
+      throw new Error('API Error: "editRoom" failed.');
+    }
+  }
+
+  async kickUser(roomId, userId) {
+    const response = await this.request(`/room/${roomId}/kick`, {
+      method: 'POST',
+      authenticate: true,
+      body: {
+        userId,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('API Error: "kickUser" failed.');
+    }
+  }
+
   async startGame(roomId) {
     const response = await this.request(`/room/${roomId}/game/start`, {
       method: 'POST',

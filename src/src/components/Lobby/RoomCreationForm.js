@@ -65,7 +65,7 @@ const Component = ({onSubmit, submitting}) => {
         <button
           type="submit"
           disabled={submitting}
-          className="btn w-full"
+          className="btn py-2 px-4 w-full"
         >
           {submitting && (
             <Spinner className="animate-spin w-4 h-4 mr-3 -ml-1" />
