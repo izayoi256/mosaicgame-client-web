@@ -1,10 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { ApiContext } from '../../contexts';
 import RoomCreationForm from './RoomCreationForm';
 import JoinRoomForm from './JoinRoomForm';
-import { Login, Refresh, PlusCircle, Exclamation, Key } from '../Icons';
+import { Login, Logout, Refresh, PlusCircle, Exclamation, Key } from '../Icons';
 
-const Component = () => {
+const Component = ({onLogoutSubmit}) => {
 
   const api = useContext(ApiContext);
   const [creatingRoom, setCreatingRoom] = useState(false);
@@ -122,6 +123,9 @@ const Component = () => {
           </ul>
         </div>
       </div>
+      <div className="fixed right-6 bottom-6">
+        <Logout className="w-12 h-12 p-2 rounded-full bg-white cursor-pointer opacity-80 hover:opacity-100" onClick={() => onLogoutSubmit && onLogoutSubmit()} />
+      </div>
       {showOverlay && (
         <div className="overlay bg-opacity-30 bg-black">
           {showRoomCreationForm && (
@@ -163,6 +167,8 @@ const Component = () => {
   );
 };
 
-Component.propTypes = {};
+Component.propTypes = {
+  onLogoutSubmit: PropTypes.func,
+};
 
 export default Component;

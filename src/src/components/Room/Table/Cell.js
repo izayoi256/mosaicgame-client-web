@@ -1,16 +1,16 @@
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { useFrame } from 'react-three-fiber';
 import PropTypes from 'prop-types';
-import { cellWidth } from '../../Game/Cell';
+import { MeContext, GameContext } from '../../../contexts';
 
 export const cellRadius = 15;
 export const cellHeight = 8;
 
-const stoneRadius = cellWidth * 0.45;
+const stoneRadius = cellRadius * 0.9;
 const stoneHeight = cellHeight;
 const radialSegments = 24;
 
-const StoneMesh = ({color, position, onClick, onFrame, castShadow = true, receiveShadow = true, transparent = false}) => {
+const StoneMesh = ({color, onClick, onFrame, position = [0, 0, 0], castShadow = true, receiveShadow = true, transparent = false}) => {
   const mesh = useRef();
   const geometry = useRef();
   const material = useRef();
@@ -35,19 +35,19 @@ const StoneMesh = ({color, position, onClick, onFrame, castShadow = true, receiv
   );
 }
 
-const FirstCell = ({onClick, position}) => {
+const FirstCell = ({onClick, position = [0, 0, 0]}) => {
   return <StoneMesh color={0xFF0000} {...{onClick, position}} />
 };
 
-const SecondCell = ({onClick, position}) => {
+const SecondCell = ({onClick, position = [0, 0, 0]}) => {
   return <StoneMesh color={0x00FF00} {...{onClick, position}} />
 };
 
-const NeutralCell = ({onClick, position}) => {
+const NeutralCell = ({onClick, position = [0, 0, 0]}) => {
   return <StoneMesh color={0x999999} {...{onClick, position}} />
 };
 
-const LegalCell = ({onClick, position}) => {
+const LegalCell = ({onClick, position = [0, 0, 0]}) => {
   const onFrame = (mesh, geometry, material) => {
     if (!material.current) {
       return;
@@ -74,11 +74,15 @@ const EmptyCell = () => {
   return null;
 };
 
-const Component = ({index, value, position, onClick: onCellClick}) => {
+const Component = ({index, state, onClick: onCellClick, position = [0, 0, 0]}) => {
+  const me = useContext(MeContext);
+  const game = useContext(GameContext);
   const onClick = () => onCellClick(index);
-  switch (value) {
+  switch (state) {
     case 0:
-      return <LegalCell {...{position, onClick}} />
+      return (me !== null && game !== null && me.id === game.current_player_id && !game.is_over)
+        ? <LegalCell {...{position, onClick}} />
+        : <EmptyCell {...{position, onClick}} />;
     case 1:
       return <FirstCell {...{position, onClick}} />
     case 2:
@@ -92,9 +96,9 @@ const Component = ({index, value, position, onClick: onCellClick}) => {
 
 Component.propTypes = {
   index: PropTypes.number.isRequired,
-  value: PropTypes.number,
+  state: PropTypes.number,
   onClick: PropTypes.func.isRequired,
+  position: PropTypes.array,
 };
 
 export default Component;
-

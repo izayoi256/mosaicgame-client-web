@@ -73,7 +73,6 @@ const App = () => {
   const showEntryScreen = (token === null);
   const showLobbyScreen = me && (roomId === null);
   const showRoomScreen = me && (roomId !== null);
-  const showMePanel = !!me;
 
   return (
     <div className="background">
@@ -90,19 +89,11 @@ const App = () => {
               </div>
             </div>
           )}
-          {showMePanel && (
-            <div className="fixed z-20">
-              {me.name}
-              <form onSubmit={onLogoutSubmit}>
-                <button>退出</button>
-              </form>
-            </div>
-          )}
           {showEntryScreen && (
             <Entry onTokenFetched={(newToken) => setToken(newToken ?? null)} />
           )}
           {showLobbyScreen && (
-            <Lobby />
+            <Lobby onLogoutSubmit={onLogoutSubmit} />
           )}
           {showRoomScreen && (
             <Room

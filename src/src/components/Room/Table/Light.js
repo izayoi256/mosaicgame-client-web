@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
-export default (props) => {
+const Component = ({x, y, z, ...props}) => {
 
   const ref = useRef();
 
@@ -8,15 +9,15 @@ export default (props) => {
     if (!ref.current) {
       return;
     }
-    ref.current.position.x = props.x;
-    ref.current.position.y = props.y;
-    ref.current.position.z = props.z;
+    ref.current.position.x = x;
+    ref.current.position.y = y;
+    ref.current.position.z = z;
     ref.current.shadow.camera.right = 200;
     ref.current.shadow.camera.left = -200;
     ref.current.shadow.camera.top = -200;
     ref.current.shadow.camera.bottom = 200;
 
-  }, [ref, props.x, props.y, props.z]);
+  }, [ref, x, y, z]);
 
   return (
     <directionalLight
@@ -26,3 +27,11 @@ export default (props) => {
     />
   );
 };
+
+Component.propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  z: PropTypes.number.isRequired,
+};
+
+export default Component;

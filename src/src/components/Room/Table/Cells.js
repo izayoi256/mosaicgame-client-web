@@ -1,17 +1,14 @@
 import PropTypes from 'prop-types';
 import Cell, { cellHeight, cellRadius } from './Cell';
 
-const cellsY = cellHeight * 0.5;
+const Layer = ({cells, onCellClick, position = [0, 0, 0]}) => {
 
-const Layer = ({cells, stepsFromBoard, onCellClick}) => {
-
-  const layerY = cellHeight * (stepsFromBoard - 1);
   const layerLength = cells.length;
   const layerSize = Math.sqrt(layerLength);
 
   return (
     <group
-      position={[0, layerY, 0]}
+      {...{position}}
     >
       {cells.map((cell, cellIndexInLayer) => {
         const cellCoordX = cellIndexInLayer % layerSize;
@@ -22,7 +19,7 @@ const Layer = ({cells, stepsFromBoard, onCellClick}) => {
           <Cell
             key={cell.index}
             index={cell.index}
-            value={cell.value}
+            state={cell.state}
             onClick={onCellClick}
             position={[cellX, 0, cellZ]}
           />
@@ -34,11 +31,11 @@ const Layer = ({cells, stepsFromBoard, onCellClick}) => {
 
 Layer.propTypes = {
   cells: PropTypes.array.isRequired,
-  stepsFromBoard: PropTypes.number.isRequired,
   onCellClick: PropTypes.func.isRequired,
+  position: PropTypes.array,
 };
 
-const Component = ({size, cells, onCellClick}) => {
+const Component = ({size, cells, onCellClick, position = [0, 0, 0]}) => {
   const layers = [];
 
   Array(size).fill().map((_, k) => k + 1).reduce((layerStart, layerSize) => {
@@ -54,7 +51,7 @@ const Component = ({size, cells, onCellClick}) => {
 
   return (
     <group
-      position={[0, cellsY, 0]}
+      {...{position}}
     >
       {layers.map((layer) => (
         <Layer
@@ -62,6 +59,7 @@ const Component = ({size, cells, onCellClick}) => {
           cells={layer.cells}
           stepsFromBoard={layer.stepsFromBoard}
           onCellClick={onCellClick}
+          position={[0, cellHeight * (layer.stepsFromBoard - 1), 0]}
         />
       ))}
     </group>
@@ -72,6 +70,7 @@ Component.propTypes = {
   size: PropTypes.number.isRequired,
   cells: PropTypes.array.isRequired,
   onCellClick: PropTypes.func.isRequired,
+  position: PropTypes.array,
 };
 
 export default Component;
