@@ -55,7 +55,6 @@ const Component = ({roomId, onFetchingRoomFailure}) => {
         api.makeMove(game.id, index)
           .catch((_) => {
             setMakingMove(false);
-            // TODO
           });
         setMakingMove(true);
       }
@@ -215,7 +214,6 @@ const Component = ({roomId, onFetchingRoomFailure}) => {
   useEffect(() => {
     if (game !== null && gameChannel !== null) {
       gameChannel.bind('move.made', (_) => {
-        // TODO?
       });
       return () => gameChannel.unbind('move.made');
     }

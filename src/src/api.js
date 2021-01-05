@@ -1,45 +1,26 @@
 import Pusher from 'pusher-js';
 
-const pusherAppKey = 'a96e39617eb66d298866';
-// TODO
-Pusher.logToConsole = true;
+const pusherAppKey = process.env.REACT_APP_PUSHER_APP_KEY;
+Pusher.logToConsole = (process.env.NODE_ENV === 'development');
 
 class Api {
   baseUrl;
-  size;
   token;
-  board;
-  playerIndex;
   pusher;
 
   constructor(token = null) {
-    // TODO
-    this.baseUrl = 'http://localhost:8280/api';
-    this.size = 3;
+    this.baseUrl = process.env.REACT_APP_API_ENDPOINT;
     this.token = token;
-    this.playerIndex = 0;
-    this.board = Array(this.size).fill(null).map((v, k) => k).reduce((board, next) => {
-      const length = Math.pow(next + 1, 2);
-      board.push(...Array(length).fill(-1));
-      return board;
-    }, []);
-    this.board.pop();
-    this.board.pop();
-    this.board.push(0);
-    this.board.push(3);
 
     let pusherConfig = {
-        // TODO
-        cluster: 'ap3',
-        forceTLS: true,
-      }
-    ;
+      cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
+      forceTLS: true,
+    };
 
     if (token !== null) {
       pusherConfig = {
         ...pusherConfig,
-        // TODO
-        authEndpoint: 'http://localhost:8280/broadcasting/auth',
+        authEndpoint: process.env.REACT_APP_PUSHER_AUTH_ENDPOINT,
         authTransport: 'ajax',
         auth: {
           headers: {
