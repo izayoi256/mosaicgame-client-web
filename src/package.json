@@ -16,8 +16,8 @@
     "start": "react-scripts start",
     "prebuild": "tailwindcss build src/styles/tailwind.css -o src/styles/tailwind.compiled.css",
     "build": "react-scripts build",
-    "build-development": "dotenv -e .env.development.local react-scripts build",
-    "build-production": "dotenv -e .env.production.local react-scripts build",
+    "build-development": "tailwindcss build src/styles/tailwind.css -o src/styles/tailwind.compiled.css && dotenv -e .env.development.local react-scripts build",
+    "build-production": "tailwindcss build src/styles/tailwind.css -o src/styles/tailwind.compiled.css && dotenv -e .env.production.local react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build"

@@ -245,6 +245,9 @@ const Component = ({roomId, onFetchingRoomFailure}) => {
     }
   }, [setGame, game, gameChannel]);
 
+  const scoreForFirst = (game !== null) && ((!game.is_over && game.is_first_turn) || game.first_wins);
+  const scoreForSecond = (game !== null) && ((!game.is_over && game.is_second_turn) || game.second_wins);
+
   return (
     <div className="h-full flex">
       {room === null && (
@@ -280,7 +283,7 @@ const Component = ({roomId, onFetchingRoomFailure}) => {
               />
               {game !== null && (
                 <div className="absolute left-0 top-0 w-full flex">
-                  <div className="bg-theme-500 mx-auto rounded-b cursor-pointer hover:opacity-80 text-white font-medium" onClick={() => setShowScore(!showScore)}>
+                  <div className={`${scoreForFirst ? 'bg-red-500' : ''} ${scoreForSecond ? 'bg-green-500' : ''} transition-colors mx-auto rounded-b cursor-pointer hover:opacity-80 text-white font-medium`} onClick={() => setShowScore(!showScore)}>
                     <div className={`pt-2 px-2 overflow-y-hidden ${showScore ? '' : 'h-0'}`}>
                       <div className="inline-block w-4 h-4">
                         {game.first_wins && (
@@ -310,10 +313,10 @@ const Component = ({roomId, onFetchingRoomFailure}) => {
                     </div>
                     <div className="rounded-b flex pb-0.5">
                       {showScore && (
-                        <ChevronUp className="w-3 h-3 p-0.5 m-auto rounded-full bg-white text-theme-500" />
+                        <ChevronUp className={`w-3 h-3 p-0.5 m-auto rounded-full bg-white ${scoreForFirst ? 'text-red-500' : ''} ${scoreForSecond ? 'text-green-500' : ''}`} />
                       )}
                       {!showScore && (
-                        <ChevronDown className="w-3 h-3 p-0.5 m-auto rounded-full bg-white text-theme-500" />
+                        <ChevronDown className={`w-3 h-3 p-0.5 m-auto rounded-full bg-white ${scoreForFirst ? 'text-red-500' : ''} ${scoreForSecond ? 'text-green-500' : ''}`} />
                       )}
                     </div>
                   </div>
