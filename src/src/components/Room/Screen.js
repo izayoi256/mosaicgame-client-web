@@ -52,9 +52,25 @@ const Component = ({roomId, onFetchingRoomFailure}) => {
   const onCellClick = useCallback((index) => {
     if (api !== null && game !== null) {
       if (!makingMove && game.board[index] === 0) {
+        const oldCurrentPlayerId = game.current_player_id;
+        const oldBoard = game.board;
+        const newBoard = [...game.board];
+        newBoard[index] = game.is_first_turn
+          ? 1
+          : 2;
+        setGame({
+          ...game,
+          current_player_id: null,
+          board: newBoard,
+        });
         api.makeMove(game.id, index)
           .catch((_) => {
             setMakingMove(false);
+            setGame({
+              ...game,
+              current_player_id: oldCurrentPlayerId,
+              board: oldBoard,
+            });
           });
         setMakingMove(true);
       }
@@ -165,7 +181,7 @@ const Component = ({roomId, onFetchingRoomFailure}) => {
   }, [setGame, api, roomId]);
 
   useEffect(() => {
-    if (gameId !== null) {
+    if (api !== null && gameId !== null) {
       setGameChannel(api.subscribeGame(gameId));
       return () => api.unsubscribeGame(gameId);
     } else {

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const Component = ({x, y, z, ...props}) => {
+const Component = ({x, y, z, shadowBias, ...props}) => {
 
   const ref = useRef();
 
@@ -16,8 +16,10 @@ const Component = ({x, y, z, ...props}) => {
     ref.current.shadow.camera.left = -200;
     ref.current.shadow.camera.top = -200;
     ref.current.shadow.camera.bottom = 200;
+    ref.current.shadow.bias = shadowBias;
+    console.log(shadowBias);
 
-  }, [ref, x, y, z]);
+  }, [ref, x, y, z, shadowBias]);
 
   return (
     <directionalLight

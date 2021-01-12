@@ -38,7 +38,7 @@ const Component = ({onCellClick}) => {
     top: 150,
     bottom: -150,
   });
-  const [lightProps, setLightProps] = useState({x: -20, y: 200, z: 75});
+  const [lightProps, setLightProps] = useState({x: -20, y: 200, z: 75, shadowBias: -0.005});
 
   return (
     <div className="w-full h-full flex flex-col">

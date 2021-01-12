@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useFrame } from 'react-three-fiber';
 import PropTypes from 'prop-types';
 import { MeContext, GameContext } from '../../../contexts';
@@ -10,7 +10,12 @@ const stoneRadius = cellRadius * 0.9;
 const stoneHeight = cellHeight;
 const radialSegments = 24;
 
-const StoneMesh = ({color, onClick, onFrame, position = [0, 0, 0], castShadow = true, receiveShadow = true, transparent = false}) => {
+const firstStoneColor = 0xef4444;
+const secondStoneColor = 0x22c55e;
+const neutralStoneColor = 0x999999;
+const legalStoneColor = 0xFFFFFF;
+
+const StoneMesh = ({color, onClick, onFrame, position = [0, 0, 0], castShadow = true, receiveShadow = true, transparent = false, ...props}) => {
   const mesh = useRef();
   const geometry = useRef();
   const material = useRef();
@@ -28,6 +33,7 @@ const StoneMesh = ({color, onClick, onFrame, position = [0, 0, 0], castShadow = 
         castShadow,
         receiveShadow,
       }}
+      {...props}
     >
       <cylinderBufferGeometry ref={geometry} args={[stoneRadius, stoneRadius, stoneHeight, radialSegments]} />
       <meshStandardMaterial ref={material} {...{color, transparent}} />
@@ -36,20 +42,26 @@ const StoneMesh = ({color, onClick, onFrame, position = [0, 0, 0], castShadow = 
 }
 
 const FirstCell = ({onClick, position = [0, 0, 0]}) => {
-  return <StoneMesh color={0xFF0000} {...{onClick, position}} />
+  return <StoneMesh color={firstStoneColor} {...{onClick, position}} />
 };
 
 const SecondCell = ({onClick, position = [0, 0, 0]}) => {
-  return <StoneMesh color={0x00FF00} {...{onClick, position}} />
+  return <StoneMesh color={secondStoneColor} {...{onClick, position}} />
 };
 
 const NeutralCell = ({onClick, position = [0, 0, 0]}) => {
-  return <StoneMesh color={0x999999} {...{onClick, position}} />
+  return <StoneMesh color={neutralStoneColor} {...{onClick, position}} />
 };
 
 const LegalCell = ({onClick, position = [0, 0, 0]}) => {
+  const game = useContext(GameContext);
+  const [hover, setHover] = useState(false);
   const onFrame = (mesh, geometry, material) => {
     if (!material.current) {
+      return;
+    }
+    if (hover) {
+      material.current.opacity = 0.75;
       return;
     }
     const blinkPerSecond = 1.8;
@@ -57,11 +69,22 @@ const LegalCell = ({onClick, position = [0, 0, 0]}) => {
     const radian = degree * (Math.PI / 180);
     material.current.opacity = (Math.sin(radian) + 1) / 2 * 0.3 + 0.15;
   };
+  let stoneColor = legalStoneColor;
+  if (hover) {
+    if (game.is_first_turn) {
+      stoneColor = firstStoneColor;
+    }
+    if (game.is_second_turn) {
+      stoneColor = secondStoneColor;
+    }
+  }
   return <StoneMesh
-    color={0xFFFFFF}
+    color={stoneColor}
     transparent={true}
     castShadow={false}
     receiveShadow={false}
+    onPointerOver={() => setHover(true)}
+    onPointerOut={() => setHover(false)}
     {...{
       onClick,
       onFrame,
