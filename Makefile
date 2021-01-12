@@ -8,3 +8,5 @@ down:
 	docker-compose down
 ssh:
 	docker-compose exec -u ${uid} app bash
+deploy:
+	cd src && yarn deploy
